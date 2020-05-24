@@ -1,10 +1,11 @@
 package io.illusionbank.transaction.analyzer.io.net;
 
-import java.nio.channels.SocketChannel;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.channels.SocketChannel;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ClientConnection {
     public final String id;
     private SocketChannel channel;
@@ -20,13 +21,12 @@ public class ClientConnection {
 
     public void close() {
         try {
-            emmit("finish");
             channel.shutdownInput();
             channel.shutdownOutput();
             ChannelHelper.close(channel);
             channel = null;
         } catch (IOException ex) {
-            Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("IO error {}", ex);
         }
     }
     
